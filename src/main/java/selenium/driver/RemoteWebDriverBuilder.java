@@ -1,31 +1,26 @@
 package selenium.driver;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
+import java.net.URL;
+import java.net.MalformedURLException;
 
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.opera.OperaDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.EdgeDriverManager;
-import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
-import io.github.bonigarcia.wdm.MarionetteDriverManager;
-import io.github.bonigarcia.wdm.OperaDriverManager;
-import io.github.bonigarcia.wdm.PhantomJsDriverManager;
-
-public class WebDriverBuilder {
+public class RemoteWebDriverBuilder {
 
     private String name;
-    private final WebDriverConfig webDriverConfig;
+    private final RemoteWebDriverConfig webDriverConfig;
     private String userAgent;
     private boolean disableCookies;
 
-    public WebDriverBuilder(WebDriverConfig webDriverConfig) {
+    public RemoteWebDriverBuilder(RemoteWebDriverConfig webDriverConfig) {
         this.webDriverConfig = webDriverConfig;
     }
 
@@ -42,43 +37,34 @@ public class WebDriverBuilder {
     }
 
 
-    public WebDriver toWebDriver() {
+    public WebDriver toWebDriver() throws MalformedURLException {
         DesiredCapabilitiesFactory desiredCapabilitiesFactory = new DesiredCapabilitiesFactory();
-        DesiredCapabilities capabilities = desiredCapabilitiesFactory.initDesiredCapabilities(webDriverConfig, userAgent, disableCookies);
+        DesiredCapabilities capabilities = desiredCapabilitiesFactory.initRemoteDesiredCapabilities(webDriverConfig, userAgent, disableCookies);
         String browser = webDriverConfig.getBrowserName();
+
+        System.out.println("remote webdriver: " + webDriverConfig.getRemoteWebDriver());
 
         switch (browser) {
             case "chrome":
-                ChromeDriverManager.getInstance().setup();
-                final ChromeDriver chromeDriver = new ChromeDriver(capabilities);
-                // chromeDriver.manage().window().maximize();
+                final RemoteWebDriver chromeDriver = new RemoteWebDriver(new URL(webDriverConfig.getRemoteWebDriver()), capabilities);
+                chromeDriver.manage().window().setSize(new Dimension(1024, 720));
                 return chromeDriver;
             case "edge":
-                EdgeDriverManager.getInstance().setup();
-                final EdgeDriver edgeDriver = new EdgeDriver(capabilities);
-                edgeDriver.manage().window().maximize();
+                final RemoteWebDriver edgeDriver = new RemoteWebDriver(new URL(webDriverConfig.getRemoteWebDriver()), capabilities);
                 return edgeDriver;
             case "internetexplorer":
-                InternetExplorerDriverManager.getInstance().setup();
                 final InternetExplorerDriver internetExplorerDriver = new InternetExplorerDriver(capabilities);
-                internetExplorerDriver.manage().window().maximize();
                 return internetExplorerDriver;
             case "opera":
-                OperaDriverManager.getInstance().setup();
                 final OperaDriver operaDriver = new OperaDriver(capabilities);
-                operaDriver.manage().window().maximize();
                 return operaDriver;
             case "phantomjs":
-                PhantomJsDriverManager.getInstance().setup();
                 final PhantomJSDriver phantomJsWebDriver = new PhantomJSDriver(capabilities);
                 phantomJsWebDriver.manage().timeouts().implicitlyWait(webDriverConfig.getImplicitlyWait(), SECONDS);
                 phantomJsWebDriver.manage().timeouts().setScriptTimeout(webDriverConfig.getDomMaxScriptRunTime(), SECONDS);
-                phantomJsWebDriver.manage().window().maximize();
                 return phantomJsWebDriver;
             default:
-                MarionetteDriverManager.getInstance().setup();
-                FirefoxDriver firefoxDriver = new FirefoxDriver(capabilities);
-                firefoxDriver.manage().window().maximize();
+                final RemoteWebDriver firefoxDriver = new RemoteWebDriver(new URL(webDriverConfig.getRemoteWebDriver()), capabilities);
                 return firefoxDriver;
         }
     }

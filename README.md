@@ -72,3 +72,28 @@ as well as helper methods for cookie, localstorage and sessionstorage handling.
 Example tests that [do some stuff with cookies](https://github.com/christian-draeger/basic-selenium-project/blob/master/src/test/java/selenium/testcases/DoSomeThingWithCookiesIT.java)
 and [do some stuff with localstorage/sessionstorage](https://github.com/christian-draeger/basic-selenium-project/blob/master/src/test/java/selenium/testcases/DoSomeThingWithLocalStorageIT.java)
 are added and should show the the usage self-evident.
+
+## How To run the tests
+
+1. Install browser docker images
+```sh
+chmod u+x install.sh
+./install.sh
+```
+
+2. Start selenoid using docker-compose
+```sh
+docker-compose up --build
+```
+
+3. Open http://localhost:9000 in a browser and watch the progress
+
+**Note**
+
+You can run the maven project locally by using
+
+```sh
+mvn clean verify -Pbrowser-chrome
+```
+
+Though you will have to set the `remote_webdriver` property in the `driver_config.properites` file to point to the address where selenoid is running.

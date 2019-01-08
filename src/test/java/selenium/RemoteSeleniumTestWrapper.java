@@ -2,6 +2,7 @@ package selenium;
 
 import static org.junit.Assume.assumeFalse;
 import static org.junit.Assume.assumeTrue;
+import java.net.MalformedURLException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -9,9 +10,7 @@ import org.junit.Rule;
 import org.openqa.selenium.WebDriver;
 
 import selenium.configurations.TestConfig;
-import selenium.driver.WebDriverConfig;
 import selenium.driver.RemoteWebDriverConfig;
-import selenium.utils.WebDriverProvider;
 import selenium.utils.RemoteWebDriverProvider;
 import selenium.utils.annotations.DisableCookies;
 import selenium.utils.annotations.RepeatRule;
@@ -21,18 +20,23 @@ import selenium.utils.annotations.browser.BrowserDimension;
 import selenium.utils.annotations.browser.Browsers;
 
 
-public abstract class SeleniumTestWrapper {
+public abstract class RemoteSeleniumTestWrapper {
 
 	// Config
 	protected static final TestConfig testConfig = new TestConfig();
-	private final WebDriverConfig webDriverConfig = new WebDriverConfig();
-	protected final WebDriverProvider webDriverProvider = new WebDriverProvider(this.webDriverConfig);
+	private final RemoteWebDriverConfig webDriverConfig = new RemoteWebDriverConfig();
+	protected final RemoteWebDriverProvider webDriverProvider = new RemoteWebDriverProvider(this.webDriverConfig);
 
 	@Rule
 	public RepeatRule repeatRule = new RepeatRule();
 
 	protected WebDriver getDriver() {
-		return this.webDriverProvider.getDriver();
+        try {
+            return this.webDriverProvider.getDriver();
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.getMessage());
+            return null;
+        }
 	}
 
 	/**
@@ -77,7 +81,7 @@ public abstract class SeleniumTestWrapper {
 	}
 
 	@Before
-	public void browserDimension(){
+	public void browserDimension() throws MalformedURLException {
 		BrowserDimension browserDimension = this.getClass().getAnnotation(BrowserDimension.class);
 		if (browserDimension != null) {
 			getDriver().manage().window().setSize(browserDimension.value().dimension);
@@ -85,7 +89,7 @@ public abstract class SeleniumTestWrapper {
 	}
 
 	@After
-	public void closeBrowser(){
+	public void closeBrowser() throws MalformedURLException {
 		getDriver().quit();
 	}
 

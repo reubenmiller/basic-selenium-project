@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.openqa.selenium.support.PageFactory;
 
 import selenium.SeleniumTestWrapper;
+import selenium.RemoteSeleniumTestWrapper;
 import selenium.pageobjects.HeaderSearch;
 import selenium.pageobjects.SearchResultPage;
 import selenium.pageobjects.StartPage;
@@ -22,7 +23,7 @@ import selenium.utils.annotations.browser.BrowserDimension;
 
 @BrowserDimension(XLARGE)
 @Browser(skip = { INTERNET_EXPLORER, EDGE, PHANTOMJS })
-public class SearchIT extends SeleniumTestWrapper {
+public class SearchIT extends RemoteSeleniumTestWrapper {
 
 	StartPage startPage = PageFactory.initElements(getDriver(), StartPage.class);
 	HeaderSearch search = PageFactory.initElements(getDriver(), HeaderSearch.class);
