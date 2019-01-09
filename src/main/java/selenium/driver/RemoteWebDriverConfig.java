@@ -40,11 +40,11 @@ public class RemoteWebDriverConfig {
         }
 
         int getImplicitlyWait() {
-                return this.getPropertyInt("implicitly_wait");
+                return typedProperties.getInt("implicitly_wait");
         }
 
         int getDomMaxScriptRunTime() {
-                return this.getPropertyInt("dom.max_script_run_time");
+                return typedProperties.getInt("dom.max_script_run_time");
         }
 
         String getRemoteWebDriver() {
