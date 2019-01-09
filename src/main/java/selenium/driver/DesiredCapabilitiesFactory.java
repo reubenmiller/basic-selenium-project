@@ -83,7 +83,9 @@ class DesiredCapabilitiesFactory {
 		// Check if the proxy is required for the browser to reach a website
 		// String PROXY = "10.101.0.32:8080";
 		String PROXY = config.getBrowserProxy();
+		System.out.println("Current Browser Proxy Setting: " + PROXY);
 		if (!PROXY.equals("")) {
+			System.out.println("Setting Browser Proxy Setting: " + PROXY);
 			org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
 			proxy.setHttpProxy(PROXY)
 				.setFtpProxy(PROXY)
