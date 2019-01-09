@@ -22,6 +22,12 @@ public class RemoteWebDriverConfig {
         }
 
         String getBrowserProxy() {
-                return typedProperties.getValue("browser.proxy");
+                String value = System.getProperty("browser.proxy");
+
+                if (!value.equals("")) {
+                        return typedProperties.getValue("browser.proxy");
+                } else {
+                        return value;
+                }
         }
 }
