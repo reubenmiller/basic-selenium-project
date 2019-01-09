@@ -5,6 +5,18 @@ import selenium.configurations.TypedProperties;
 public class RemoteWebDriverConfig {
         private final TypedProperties typedProperties = new TypedProperties("/driver_config.properties");
 
+        String getPropertyValue(String name) {
+                String value = System.getenv(name.toUpperCase().replace(".", "_"));
+
+                if (!value.matches(".+")) {
+                        value = System.getProperty(name);
+                } else if (!value.matches(".+")) {
+                        value = typedProperties.getValue(name);
+                }
+
+                return value;
+        }
+
         String getBrowserName() {
                 return typedProperties.getValue("browser.name");
         }
@@ -22,12 +34,6 @@ public class RemoteWebDriverConfig {
         }
 
         String getBrowserProxy() {
-                String value = System.getProperty("browser.proxy");
-
-                if (value.matches(".+")) {
-                        return value;
-                } else {
-                        return typedProperties.getValue("browser.proxy");
-                }
+                return this.getPropertyValue("browser.proxy");
         }
 }
