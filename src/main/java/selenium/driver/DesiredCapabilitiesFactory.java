@@ -23,6 +23,7 @@ class DesiredCapabilitiesFactory {
 		// Get browser from config and set browser.
 		final String browser = config.getBrowserName();
 		capabilities.setBrowserName(browser);
+		
 
 		// Set specific settings for firefox.
 		if (browser.equals("firefox")) {
@@ -79,6 +80,17 @@ class DesiredCapabilitiesFactory {
 		final String browser = config.getBrowserName();
 		capabilities.setBrowserName(browser);
 
+		// Check if the proxy is required for the browser to reach a website
+		// String PROXY = "10.101.0.32:8080";
+		String PROXY = config.getBrowserProxy();
+		if (!PROXY.equals("")) {
+			org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
+			proxy.setHttpProxy(PROXY)
+				.setFtpProxy(PROXY)
+				.setSslProxy(PROXY);
+				capabilities.setCapability(CapabilityType.PROXY, proxy);
+		}
+
 		// Set specific settings for firefox.
 		if (browser.equals("firefox")) {
 			FirefoxProfile profile = new FirefoxProfile();
@@ -103,14 +115,6 @@ class DesiredCapabilitiesFactory {
 			capabilities.setCapability("enableVideo", true);
 			capabilities.setCapability("enableVideo", true);
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-
-			String PROXY = "10.101.0.32:8080";
-
-			org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
-			proxy.setHttpProxy(PROXY)
-				.setFtpProxy(PROXY)
-				.setSslProxy(PROXY);
-				capabilities.setCapability(CapabilityType.PROXY, proxy);
 		}
 
 		// Set specific settings for opera.
