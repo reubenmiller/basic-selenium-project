@@ -13,9 +13,13 @@ public class RemoteWebDriverConfig {
 
                 if (TextUtils.isEmpty(value)) {
                         value = System.getProperty(name);
-                } else if (TextUtils.isEmpty(value)) {
+                }
+
+                if (TextUtils.isEmpty(value)) {
                         value = typedProperties.getValue(name);
-                } else {
+                }
+
+                if (TextUtils.isEmpty(value)) {
                         value = "";
                 }
 
