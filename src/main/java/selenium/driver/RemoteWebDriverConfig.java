@@ -36,7 +36,7 @@ public class RemoteWebDriverConfig {
         }
 
         String getBrowserName() {
-                return this.getPropertyString("browser.name");
+                return typedProperties.getValue("browser.name");
         }
 
         int getImplicitlyWait() {
@@ -48,7 +48,7 @@ public class RemoteWebDriverConfig {
         }
 
         String getRemoteWebDriver() {
-                return this.getPropertyString("remote_webdriver");
+                return typedProperties.getValue("remote_webdriver");
         }
 
         String getBrowserProxy() {
