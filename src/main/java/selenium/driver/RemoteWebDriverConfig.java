@@ -7,7 +7,7 @@ import selenium.configurations.TypedProperties;
 public class RemoteWebDriverConfig {
         private final TypedProperties typedProperties = new TypedProperties("/driver_config.properties");
 
-        String getPropertyString(String name) {
+        String getPropertyString(String name, String defaultValue) {
                 String value = "";
                 value = System.getenv(name.toUpperCase().replace(".", "_"));
 
@@ -20,17 +20,17 @@ public class RemoteWebDriverConfig {
                 }
 
                 if (TextUtils.isEmpty(value)) {
-                        value = "";
+                        value = defaultValue;
                 }
 
                 return value;
         }
 
-        int getPropertyInt(String name) {
+        int getPropertyInt(String name, int defaultValue) {
                 String value = "";
-                value = this.getPropertyString(name);
+                value = this.getPropertyString(name, "");
 
-                int valueInt = 0;
+                int valueInt = defaultValue;
                 
                 try {
                         valueInt = Integer.parseInt(value);
@@ -40,7 +40,7 @@ public class RemoteWebDriverConfig {
         }
 
         String getBrowserName() {
-                return typedProperties.getValue("browser.name");
+                return this.getPropertyString("browser.name", "");
         }
 
         int getImplicitlyWait() {
@@ -52,10 +52,10 @@ public class RemoteWebDriverConfig {
         }
 
         String getRemoteWebDriver() {
-                return typedProperties.getValue("remote_webdriver");
+                return this.getPropertyString("remote_webdriver", "");
         }
 
         String getBrowserProxy() {
-                return this.getPropertyString("browser.proxy");
+                return this.getPropertyString("browser.proxy", "");
         }
 }
