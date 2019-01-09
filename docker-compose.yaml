@@ -7,7 +7,7 @@ services:
     volumes:
       - "$PWD:/etc/selenoid"
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "$PWD/video:/opt/selenoid/video"
+      - "$PWD:/opt/selenoid/video"
     environment:
       - OVERRIDE_VIDEO_OUTPUT_DIR=$PWD
     command: ["-conf", "/etc/selenoid/browsers.json", "-video-output-dir", "/opt/selenoid/video"]
@@ -24,22 +24,14 @@ services:
     command: ["--selenoid-uri", "http://selenoid:4444"]
 
   myapp:
-    build: 
+    build:
       context: ./
       dockerfile: ./Dockerfile
     network_mode: bridge
     links:
       - selenoid
-    depends_on:
-      - selenoid
-
-  mytests:
-    build:
-      context: ./
-      dockerfile: ./JavaDockerfile
-    network_mode: bridge
-    links:
-      - selenoid
+    # environment:
+    #  - BROWSER_PROXY=localhost:8080
     depends_on:
       - selenoid
     
