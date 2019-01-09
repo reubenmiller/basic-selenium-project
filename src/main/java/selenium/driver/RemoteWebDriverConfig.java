@@ -13,6 +13,8 @@ public class RemoteWebDriverConfig {
                         value = System.getProperty(name);
                 } else if (value == null || !value.matches(".+")) {
                         value = typedProperties.getValue(name);
+                } else {
+                        value = "";
                 }
 
                 return value;
