@@ -84,7 +84,7 @@ class DesiredCapabilitiesFactory {
 		// String PROXY = "10.101.0.32:8080";
 		String PROXY = config.getBrowserProxy();
 		System.out.println("Current Browser Proxy Setting: " + PROXY);
-		if (!PROXY.equals("")) {
+		if (PROXY.matches(".+")) {
 			System.out.println("Setting Browser Proxy Setting: " + PROXY);
 			org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
 			proxy.setHttpProxy(PROXY)

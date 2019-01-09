@@ -24,10 +24,10 @@ public class RemoteWebDriverConfig {
         String getBrowserProxy() {
                 String value = System.getProperty("browser.proxy");
 
-                if (!value.equals("")) {
-                        return typedProperties.getValue("browser.proxy");
-                } else {
+                if (value.matches(".+")) {
                         return value;
+                } else {
+                        return typedProperties.getValue("browser.proxy");
                 }
         }
 }
