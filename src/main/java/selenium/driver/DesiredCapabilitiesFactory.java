@@ -11,6 +11,7 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.CapabilityType;
 
 class DesiredCapabilitiesFactory {
 
@@ -100,7 +101,16 @@ class DesiredCapabilitiesFactory {
 			options.addArguments("user-agent=" + userAgent);
 			capabilities.setCapability("enableVNC", true);
 			capabilities.setCapability("enableVideo", true);
+			capabilities.setCapability("enableVideo", true);
 			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+
+			String PROXY = "10.101.0.32:8080";
+
+			org.openqa.selenium.Proxy proxy = new org.openqa.selenium.Proxy();
+			proxy.setHttpProxy(PROXY)
+				.setFtpProxy(PROXY)
+				.setSslProxy(PROXY);
+				capabilities.setCapability(CapabilityType.PROXY, proxy);
 		}
 
 		// Set specific settings for opera.
