@@ -6,11 +6,12 @@ public class RemoteWebDriverConfig {
         private final TypedProperties typedProperties = new TypedProperties("/driver_config.properties");
 
         String getPropertyString(String name) {
-                String value = System.getenv(name.toUpperCase().replace(".", "_"));
+                String value = "";
+                value = System.getenv(name.toUpperCase().replace(".", "_"));
 
-                if (!value.matches(".+")) {
+                if (value == null || !value.matches(".+")) {
                         value = System.getProperty(name);
-                } else if (!value.matches(".+")) {
+                } else if (value == null || !value.matches(".+")) {
                         value = typedProperties.getValue(name);
                 }
 
@@ -18,7 +19,8 @@ public class RemoteWebDriverConfig {
         }
 
         int getPropertyInt(String name) {
-                String value = this.getPropertyString(name);
+                String value = "";
+                value = this.getPropertyString(name);
                 int valueInt = 0;
                 
                 try {
