@@ -81,12 +81,14 @@ chmod u+x install.sh
 ./install.sh
 ```
 
-2. Start selenoid using docker-compose
+3. Edit the proxy address `settings.xml`. Replace `localhost` with the ip address of the corporate proxy.
+
+4. Start selenoid using docker-compose
 ```sh
 docker-compose up --build
 ```
 
-3. Open http://localhost:9000 in a browser and watch the progress
+5. Open http://localhost:9000 in a browser and watch the progress
 
 **Note**
 
