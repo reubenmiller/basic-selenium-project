@@ -1,5 +1,7 @@
 package selenium.driver;
 
+import org.apache.http.util.TextUtils;
+
 import selenium.configurations.TypedProperties;
 
 public class RemoteWebDriverConfig {
@@ -9,9 +11,9 @@ public class RemoteWebDriverConfig {
                 String value = "";
                 value = System.getenv(name.toUpperCase().replace(".", "_"));
 
-                if (value == null || !value.matches(".+")) {
+                if (TextUtils.isEmpty(value)) {
                         value = System.getProperty(name);
-                } else if (value == null || !value.matches(".+")) {
+                } else if (TextUtils.isEmpty(value)) {
                         value = typedProperties.getValue(name);
                 } else {
                         value = "";
@@ -23,6 +25,7 @@ public class RemoteWebDriverConfig {
         int getPropertyInt(String name) {
                 String value = "";
                 value = this.getPropertyString(name);
+
                 int valueInt = 0;
                 
                 try {
